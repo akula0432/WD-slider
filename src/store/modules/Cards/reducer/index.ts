@@ -1,4 +1,5 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import { Image } from 'react-native-image-crop-picker';
 
 export interface ICard {
   id: string;
@@ -16,6 +17,7 @@ export interface ICard {
     x: number,
     y: number,
   }
+  photo?: Image | null
 }
 
 export interface CardState {
@@ -44,6 +46,7 @@ const initialState: CardState = {
         x: 0,
         y: 0,
       },
+      photo: null,
     },
   ],
   setCurrentCardIndex: 0,
@@ -118,8 +121,14 @@ const cardSlice = createSlice({
         }
       }
     },
+    setPhoto: (state, action: PayloadAction<Image>) => {
+      const currentCard = state.cards[state.setCurrentCardIndex];
+      if (currentCard) {
+        currentCard.photo = action.payload;
+      }
+    },
   },
 });
 
-export const {addCard, editCard, deleteCard, setCurrentCardIndex, setOpenPlate, setOpenFonts, setCurrentInputOpen, setChangeTextColor, setChangeFontWeight, setPosition} = cardSlice.actions;
+export const {addCard, editCard, deleteCard, setCurrentCardIndex, setOpenPlate, setOpenFonts, setCurrentInputOpen, setChangeTextColor, setChangeFontWeight, setPosition, setPhoto} = cardSlice.actions;
 export default cardSlice.reducer;

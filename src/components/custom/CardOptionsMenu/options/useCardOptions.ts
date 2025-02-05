@@ -1,6 +1,6 @@
-import {SvgProps} from 'react-native-svg';
+import {Image, SvgProps} from 'react-native-svg';
 import {useDispatch} from 'react-redux';
-import {deleteCard, setOpenFonts, setOpenPlate} from '../../../../store/modules/Cards/reducer';
+import {deleteCard, setOpenFonts, setOpenPlate, setPhoto} from '../../../../store/modules/Cards/reducer';
 
 import { CircleIcon } from '../../../../assets/icons/CircleIcon';
 import { GalleryIcon } from '../../../../assets/icons/GalleryIcon';
@@ -8,6 +8,7 @@ import { SensitiveIcon } from '../../../../assets/icons/SensitiveIcon';
 import { StickerIcon } from '../../../../assets/icons/StickerIcon';
 import { ImageIcon } from '../../../../assets/icons/ImageIcon';
 import { TrashIcon } from '../../../../assets/icons/TrashIcon';
+import { useUploadPhoto } from '../../../../hooks/useUploadPhoto';
 
 export interface ICardOption {
   Icon: (props: SvgProps) => React.JSX.Element;
@@ -29,6 +30,10 @@ export const useCardOptions = () => {
     dispatch(setOpenFonts(true));
   };
 
+  const handleUpdate = (photo: Image) => dispatch(setPhoto(photo));
+
+  const {handleCamera} = useUploadPhoto({updater: handleUpdate});
+
   return [
     {
       Icon: CircleIcon,
@@ -48,7 +53,7 @@ export const useCardOptions = () => {
     },
     {
       Icon: ImageIcon,
-      handlePress: () => {},
+      handlePress: handleCamera,
     },
     {
       Icon: TrashIcon,
